@@ -5,11 +5,11 @@ The functions in this file are considerably harder than the functions in the Bin
 
 from Trees.BinaryTree import BinaryTree, Node
 
-class BST():
+class BST(BinaryTree):
     '''
     FIXME:
     BST is currently not a subclass of BinaryTree.
-    You should make the necessary changes in the class declaration line above 
+    You should make the necessary changes in the class declaration line above
     and in the constructor below.
     '''
 
@@ -19,7 +19,10 @@ class BST():
         If xs is a list (i.e. xs is not None),
         then each element of xs needs to be inserted into the BST.
         '''
-
+        super().__init__()
+        self.root = None
+        if xs:
+            self.insert_list(xs)
 
     def __repr__(self):
         '''
@@ -59,6 +62,16 @@ class BST():
         except that their method is an instance method when it should have been a static method.
         '''
 
+        left_satisfied = True
+        right_satisfied = True
+
+        if node.left:
+            left_satisfied = node.value > node.left.value and BST._is_bst_satisfied(node.left)
+
+        if node.right:
+            right_satisfied = node.value < node.right.value and BST._is_bst_satisfied(node.right)
+
+        return left_satisfied and right_satisfied
 
     def insert(self, value):
         '''
@@ -78,7 +91,18 @@ class BST():
         The lecture videos have the exact code you need,
         except that their method is an instance method when it should have been a static method.
         '''
-
+        if value < node.value:
+            if node.left is None:
+                node.left = Node(value)
+            else:
+                BST._insert(value,node.left)
+        elif value > node.value:
+            if node.right is None:
+                node.right = Node(value)
+            else:
+                BST._insert(value,node.right)
+        else:
+            print("Value is already present in tree.")
 
     def insert_list(self, xs):
         '''
@@ -87,6 +111,8 @@ class BST():
         FIXME:
         Implement this function.
         '''
+        for x in xs:
+            self.insert(x)
 
 
     def __contains__(self, value):
@@ -112,6 +138,12 @@ class BST():
         The lecture videos have the exact code you need,
         except that their method is an instance method when it should have been a static method.
         '''
+        if value > node.value and node.right:
+            return BST._find(value, node.right)
+        elif value < node.value and node.left:
+            return BST._find(value,node.left)
+        if value == node.value:
+            return True
 
 
     def find_smallest(self):
@@ -127,6 +159,17 @@ class BST():
         Create a recursive staticmethod helper function,
         similar to how the insert and find functions have recursive helpers.
         '''
+        if self.root:
+            return BST._find_smallest(self.root)
+        else:
+            return None
+
+    @staticmethod
+    def _find_smallest(node):
+        if node.left is None:
+            return node.value
+        else:
+            return BST._find_smallest(node.left)
 
 
     def find_largest(self):
@@ -138,11 +181,21 @@ class BST():
         This function is not implemented in the lecture notes,
         but if you understand the structure of a BST it should be easy to implement.
         '''
+        if self.root:
+            return BST._find_largest(self.root)
+        else:
+            return None
 
+    @staticmethod
+    def _find_largest(node):
+        if node.right is None:
+            return node.value
+        else:
+            return BST._find_largest(node.right)
 
     def remove(self,value):
         '''
-        Removes value from the BST. 
+        Removes value from the BST.
         If value is not in the BST, it does nothing.
 
         FIXME:
@@ -151,13 +204,35 @@ class BST():
         but the video by HMC prof Colleen Lewis explains the algorithm.
 
         HINT:
-        You must have find_smallest/find_largest working correctly 
+        You must have find_smallest/find_largest working correctly
         before you can implement this function.
 
         HINT:
         Use a recursive helper function.
         '''
         self.root = BST._remove(self.root,value)
+
+
+    @staticmethod
+    def _remove(node,value):
+        if node is None:
+            return node
+        if node.value > value:
+            node.left = BST._remove(node.left, value)
+        elif node.value < value:
+            node.right = BST._remove(node.right, value)
+        else:
+            if node.left is None:
+                return node.right
+            elif node.right is None:
+                return node.left
+
+            r = node.right
+            while r.left:
+                r = r.left
+            node.value = r.value
+            node.right = BST._remove(node.right,node.value)
+        return node
 
 
     def remove_list(self, xs):
@@ -167,3 +242,8 @@ class BST():
         FIXME:
         Implement this function.
         '''
+        for x in xs:
+            self.remove(x)
+
+
+
