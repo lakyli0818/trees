@@ -184,6 +184,3 @@ class AVLTree(BST):
             return AVLTree._rebalance(node)
         else:
             return node
-
-
-print("complete")
