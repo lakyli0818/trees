@@ -131,10 +131,9 @@ class AVLTree(BST):
         Implement this function.
         '''
 
-        for elem in xs:
-            self.insert(elem)
+        for x in xs:
+            self.insert(x)
 
-            print(elem, self.root)
 
     @staticmethod
     def _rebalance(node):
