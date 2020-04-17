@@ -170,11 +170,13 @@ class AVLTree(BST):
                 node.left = Node(value)
             else:
                 AVLTree._insert(value, node.left)
+                
         elif value > node.value:
             if node.right is None:
                 node.right = Node(value)
             else:
                 AVLTree._insert(value, node.right)
+                
         else:
             print("value is already present in tree")
 
@@ -183,5 +185,6 @@ class AVLTree(BST):
             node.left = AVLTree._rebalance(node.left)
             node.right = AVLTree._rebalance(node.right)
             return AVLTree._rebalance(node)
+        
         else:
             return node
