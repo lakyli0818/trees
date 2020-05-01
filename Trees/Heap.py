@@ -7,7 +7,7 @@ class Heap(BinaryTree):
     '''
     FIXME:
     Heap is currently not a subclass of BinaryTree.
-    You should make the necessary changes in the class declaration line above
+    You should make the necessary changes in the class declaration line above 
     and in the constructor below.
     '''
 
@@ -169,7 +169,7 @@ class Heap(BinaryTree):
 
     def remove_min(self):
         '''
-        Removes the minimum value from the Heap.
+        Removes the minimum value from the Heap. 
         If the heap is empty, it does nothing.
         FIXME:
         Implement this function.
